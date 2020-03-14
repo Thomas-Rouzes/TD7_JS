@@ -1,6 +1,6 @@
 <?php
 require_once('Model.php');
 
-$tab = Model::afficheEmprunt();
+$tab = Model::afficher("emprunt");
 
 echo (json_encode($tab));

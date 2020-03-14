@@ -24,37 +24,16 @@ class Model {
         }
     }
 
-    public static function afficheAdherent(){
-        try{
+    public static function afficher ($aAfficher) {
+        if ($aAfficher == "adherent")
             $sql = "SELECT * FROM adherent";
-            $req_prep = self::$pdo->prepare($sql);
-            $req_prep->execute();
-            $req_prep->setFetchMode(PDO::FETCH_OBJ);
-            $tab = $req_prep->fetchAll();
-            return $tab;
-        }catch(PDOException $e){
-            echo $e->getMessage();
-            die("Erreur lors de la recupereation des adherents");
-        }
-    }
-
-    public static function afficheEmprunt(){
-        try{
+        else if ($aAfficher == "emprunt")
             $sql = "SELECT titreLivre FROM emprunt e JOIN livre l WHERE e.idLivre = l.idLivre";
-            $req_prep = self::$pdo->prepare($sql);
-            $req_prep->execute();
-            $req_prep->setFetchMode(PDO::FETCH_OBJ);
-            $tab = $req_prep->fetchAll();
-            return $tab;
-        }catch(PDOException $e){
-            echo $e->getMessage();
-            die("Erreur lors de la recupereation des emprunts");
-        }
-    }
-
-    public static function afficheLivre(){
-        try{
+        else if ($aAfficher == "livre")
             $sql = "SELECT * FROM livre";
+        else
+            return false;
+        try {
             $req_prep = self::$pdo->prepare($sql);
             $req_prep->execute();
             $req_prep->setFetchMode(PDO::FETCH_OBJ);
@@ -62,13 +41,11 @@ class Model {
             return $tab;
         }catch(PDOException $e){
             echo $e->getMessage();
-            die("Erreur lors de la recupereation des livres");
+            die("Erreur lors de la récupération des " . $aAfficher);
         }
+
     }
 
 }
-
 // on initialise la connexion $pdo
 Model::init_pdo();
-
-?>

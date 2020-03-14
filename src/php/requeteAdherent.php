@@ -2,6 +2,6 @@
 
 require_once('Model.php');
 
-$tab = Model::afficheAdherent();
+$tab = Model::afficher("adherent");
 
 echo (json_encode($tab));
