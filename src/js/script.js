@@ -2,8 +2,7 @@
 
 function affiche (tab, id) {
     let el = document.getElementById(id);
-    console.log(tab);
-    console.log(id == "listeAdherents");
+    el.innerText = "";
     for (let i=0;i<tab.length;i++){
         let p = document.createElement('p');
         if (id == "listeAdherents") {
@@ -20,7 +19,7 @@ function affiche (tab, id) {
 }
 
 //pour les adherents
-function callback(req){
+function callback_adherent(req){
     let json = JSON.parse(req.responseText);
     let tab = [];
     console.log(json);
@@ -36,7 +35,7 @@ function requeteAjaxAdherent () {
     let req = new XMLHttpRequest();
     req.open("GET",url,true);
     req.addEventListener("load", function () {
-        callback(req);
+        callback_adherent(req);
     });
     req.send(null);
 }
@@ -64,6 +63,7 @@ function requeteAjaxLivre(){
 // pour les emprunts
 function callback_emprunt(req){
     let json = JSON.parse(req.responseText);
+    console.log(json);
     let tab = [];
     for (let i=0;i<json.length;i++){
         tab[i] = json[i].titreLivre ;
@@ -86,5 +86,23 @@ function initialise () {
     requeteAjaxLivre();
 }
 
+//ajout
+function requeteAjaxAjout (url) {
+    let req = new XMLHttpRequest();
+    req.open("GET",url,true);
+    req.send(null);
+    initialise();
+}
+
 //event
 let affichage = document.addEventListener("DOMContentLoaded", initialise);
+let ajoutAdherent = document.getElementById("ajouterAdherent").addEventListener("click", function () {
+    let url = "php/requeteAdherent.php?nomAdherent=" + document.getElementById("nomAdherent").value;
+    requeteAjaxAjout(url);
+    document.getElementById("nomAdherent").value = "";
+});
+let ajoutLivre = document.getElementById("ajouterLivre").addEventListener("click", function () {
+    let url = "php/requeteLivre.php?titreLivre=" + document.getElementById("titreLivre").value;
+    requeteAjaxAjout(url);
+    document.getElementById("titreLivre").value = "";
+});

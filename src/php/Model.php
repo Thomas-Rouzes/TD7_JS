@@ -46,6 +46,37 @@ class Model {
 
     }
 
+    public static function ajouter ($aAjouter, $donnee)
+    {
+        if ($aAjouter == "adherent") {
+            $sql = "INSERT INTO `adherent`(`nomAdherent`) VALUES (:sql_nomA);";
+            $donne = array(
+                "sql_nomA" => $donnee["nomAdherent"]
+            );
+        } else if ($aAjouter == "emprunt") {
+            $sql = "INSERT INTO `emprunt`(`idAdherent`, `idLivre`) VALUES (:sql_idA, :sql_idL);";
+            $donne = array(
+                "sql_idA" => $donnee["idAdherent"],
+                "sql_idL" => $donnee["idLivre"]
+            );
+        } else if ($aAjouter == "livre") {
+            $sql = "INSERT INTO `livre`(`titreLivre`) VALUES (:sql_titreL);";
+            $donne = array(
+                "sql_titreL" => $donnee["titreLivre"]
+            );
+        } else {
+            return false;
+        }
+        try {
+            $requete = self::$pdo->prepare($sql);
+            $requete->execute($donne);
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
 }
 // on initialise la connexion $pdo
 Model::init_pdo();
