@@ -1,22 +1,37 @@
-//pour les adherents
+//Pour la gestion de l'affichage
 
-function afficheAdherent(tab){
-    let adherent = document.getElementById("listeAdherents");
+function affiche (tab, id) {
+    let el = document.getElementById(id);
+    console.log(tab);
+    console.log(id == "listeAdherents");
     for (let i=0;i<tab.length;i++){
         let p = document.createElement('p');
-        p.textContent = i+1+"-"+tab[i];
-        adherent.appendChild(p);
+        if (id == "listeAdherents") {
+            if (tab[i][1] == 0)
+                p.textContent = i + 1 + " - " + tab[i][0];
+            else if (tab[i][1] == 1)
+                p.textContent = i + 1 + " - " + tab[i][0] + " (" + tab[i][1] + " emprunt)";
+            else
+                p.textContent = i + 1 + " - " + tab[i][0] + " (" + tab[i][1] + " emprunts)";
+        } else
+            p.textContent = i + 1 + " - " + tab[i];
+        el.appendChild(p);
     }
 }
+
+//pour les adherents
 function callback(req){
     let json = JSON.parse(req.responseText);
-    let tab = new Array();
+    let tab = [];
+    console.log(json);
     for (let i=0;i<json.length;i++){
-        tab[i] = json[i].nomAdherent;
+        tab[i] = [];
+        tab[i][0] = json[i].nomAdherent;
+        tab[i][1] = json[i].nbLivre;
     }
-    afficheAdherent(tab);
+    affiche(tab, "listeAdherents");
 }
-function requeteAjaxAdherent(){
+function requeteAjaxAdherent () {
     let url = "php/requeteAdherent.php";
     let req = new XMLHttpRequest();
     req.open("GET",url,true);
@@ -28,22 +43,13 @@ function requeteAjaxAdherent(){
 
 
 // pour les livres dispo
-
-function afficheLivre(tab){
-    let livre = document.getElementById("listeLivresDisponibles");
-    for (let i=0;i<tab.length;i++){
-        let p = document.createElement('p');
-        p.textContent = i+1+"-"+tab[i];
-        livre.appendChild(p);
-    }
-}
 function callback_livre(req){
     let json = JSON.parse(req.responseText);
-    let tab = new Array();
+    let tab = [];
     for (let i=0;i<json.length;i++){
         tab[i] = json[i].titreLivre;
     }
-    afficheLivre(tab);
+    affiche(tab, "listeLivresDisponibles");
 }
 function requeteAjaxLivre(){
     let url = "php/requeteLivre.php";
@@ -56,21 +62,13 @@ function requeteAjaxLivre(){
 }
 
 // pour les emprunts
-function afficheEmprunt(tab){
-    let emprunt = document.getElementById("listeLivresEmpruntes");
-    for (let i=0;i<tab.length;i++){
-        let p = document.createElement('p');
-        p.textContent = i+1+"-"+tab[i];
-        emprunt.appendChild(p);
-    }
-}
 function callback_emprunt(req){
     let json = JSON.parse(req.responseText);
-    let tab = new Array();
+    let tab = [];
     for (let i=0;i<json.length;i++){
-        tab[i] = json[i].nomAdherent;
+        tab[i] = json[i].titreLivre ;
     }
-    afficheEmprunt(tab);
+    affiche(tab, "listeLivresEmpruntes");
 }
 function requeteAjaxEmprunt(){
     let url = "php/requeteEmprunt.php";
@@ -82,3 +80,11 @@ function requeteAjaxEmprunt(){
     req.send(null);
 }
 
+function initialise () {
+    requeteAjaxAdherent();
+    requeteAjaxEmprunt();
+    requeteAjaxLivre();
+}
+
+//event
+let affichage = document.addEventListener("DOMContentLoaded", initialise);

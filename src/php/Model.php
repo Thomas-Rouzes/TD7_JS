@@ -26,11 +26,11 @@ class Model {
 
     public static function afficher ($aAfficher) {
         if ($aAfficher == "adherent")
-            $sql = "SELECT * FROM adherent";
+            $sql = "SELECT nomAdherent, COUNT(e.idAdherent) AS nbLivre FROM adherent a LEFT OUTER JOIN emprunt e ON e.idAdherent = a.idAdherent GROUP BY a.idAdherent";
         else if ($aAfficher == "emprunt")
             $sql = "SELECT titreLivre FROM emprunt e JOIN livre l WHERE e.idLivre = l.idLivre";
         else if ($aAfficher == "livre")
-            $sql = "SELECT * FROM livre";
+            $sql = "SELECT * FROM Livre l WHERE NOT EXISTS ( SELECT idLivre FROM Emprunt e WHERE l.idLivre = e.idLivre)";
         else
             return false;
         try {

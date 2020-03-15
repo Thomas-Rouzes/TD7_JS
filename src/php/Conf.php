@@ -3,10 +3,10 @@
 class Conf {
 
     private static $database = array(
-        'hostname' => 'webinfo.iutmontp.univ-montp2.fr',
-        'database' => 'rouzest', // à compléter avec vos données personnelles
-        'login'    => 'rouzest', // à compléter avec vos données personnelles
-        'password' => 'Raclette97'  // à compléter avec vos données personnelles
+        'hostname' => 'localhost',
+        'database' => 'js', // à compléter avec vos données personnelles
+        'login'    => 'root', // à compléter avec vos données personnelles
+        'password' => ''  // à compléter avec vos données personnelles
     );
 
     static public function getLogin() {
