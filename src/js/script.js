@@ -6,6 +6,7 @@ function majAffichage () {
     emprunt.afficher();
     livre.afficher();
     adherent.afficher();
+    console.log("fin");
 }
 let affichage = document.addEventListener("DOMContentLoaded", majAffichage);
 
@@ -20,4 +21,8 @@ let ajoutLivre = document.getElementById("ajouterLivre").addEventListener("click
 
 let clickAdherent = document.getElementById("listeAdherents").addEventListener("click", function (e) {
     adherent.alerter(e.target.innerText);
+});
+let clickLivre = document.getElementById("listeLivresDisponibles").addEventListener("click", function (e) {
+    livre.alerter(e.target.innerText);
+    setTimeout(majAffichage, 20)
 });

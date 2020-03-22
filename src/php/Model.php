@@ -76,28 +76,20 @@ class Model {
         }
     }
 
-    public static function selectionner ($aAfficher, $tabid) {
-        if ($aAfficher == "adherent") {
+    public static function selectionner ($tabid) {
             $sql = "SELECT a.idAdherent, nomAdherent, titreLivre FROM adherent a LEFT OUTER JOIN emprunt e ON e.idAdherent = a.idAdherent LEFT OUTER JOIN Livre l on e.idLivre = l.idLivre WHERE a.idAdherent = :sql_id";
             $donnees = array(
                 "sql_id" => $tabid["idAdherent"]
             );
-        }
-        else if ($aAfficher == "emprunt")
-            $sql = "SELECT e.idLivre, idAdherent, titreLivre FROM emprunt e JOIN livre l WHERE e.idLivre = l.idLivre ORDER BY e.idLivre";
-        else if ($aAfficher == "livre")
-            $sql = "SELECT idLivre, titreLivre FROM Livre l WHERE NOT EXISTS ( SELECT idLivre FROM Emprunt e WHERE l.idLivre = e.idLivre) ORDER BY idLivre";
-        else
-            return false;
         try {
             $req_prep = self::$pdo->prepare($sql);
             $req_prep->execute($donnees);
             $req_prep->setFetchMode(PDO::FETCH_OBJ);
             $tab = $req_prep->fetchAll();
             return $tab;
-        }catch(PDOException $e){
+        } catch(PDOException $e){
             echo $e->getMessage();
-            die("Erreur lors de la récupération des " . $aAfficher);
+            die("Erreur lors de la récupération des Adhérents");
         }
     }
 

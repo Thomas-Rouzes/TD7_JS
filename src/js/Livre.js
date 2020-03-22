@@ -52,4 +52,14 @@ class Livre {
         requete.send(null);
         this.afficher();
     }
+
+    alerter (info) {
+        let reponse = prompt("prêt de \"" + info.split("-")[1 ] + "\". \nn° de l'emprunteur ?");
+        let num = parseInt(reponse, 10);
+        if ( ! (isNaN(num) || num == null) ) {
+            let url = "php/requeteEmprunt.php?idAdherent=" + reponse + "&idLivre=" + info.split("-")[0];
+            //alert(url);
+            this.AJAXAjout(url)
+        }
+    }
 }
