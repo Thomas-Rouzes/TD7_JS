@@ -76,17 +76,39 @@ class Model {
         }
     }
 
-    public static function selectionner ($tabid) {
-            $sql = "SELECT a.idAdherent, nomAdherent, titreLivre FROM adherent a LEFT OUTER JOIN emprunt e ON e.idAdherent = a.idAdherent LEFT OUTER JOIN Livre l on e.idLivre = l.idLivre WHERE a.idAdherent = :sql_id";
-            $donnees = array(
-                "sql_id" => $tabid["idAdherent"]
-            );
+    public static function selectionner ($table, $id) {
+            if ($table == "adherent") {
+                $sql = "SELECT a.idAdherent, nomAdherent, titreLivre FROM adherent a LEFT OUTER JOIN emprunt e ON e.idAdherent = a.idAdherent LEFT OUTER JOIN Livre l on e.idLivre = l.idLivre WHERE a.idAdherent = :sql_id";
+                $donnees = array(
+                    "sql_id" => $id
+                );
+            } else if ($table == "emprunt") {
+                $sql = "SELECT nomAdherent FROM adherent a JOIN emprunt e ON e.idAdherent = a.idAdherent WHERE idLivre = :sql_id";
+                $donnees = array(
+                    "sql_id" => $id
+                );
+            }
         try {
             $req_prep = self::$pdo->prepare($sql);
             $req_prep->execute($donnees);
             $req_prep->setFetchMode(PDO::FETCH_OBJ);
             $tab = $req_prep->fetchAll();
             return $tab;
+        } catch(PDOException $e){
+            echo $e->getMessage();
+            die("Erreur lors de la récupération des Adhérents");
+        }
+    }
+
+    public static function supprimer ($idLivre) {
+        try {
+            $sql = "DELETE FROM `emprunt` WHERE idLivre = :sql_id";
+            $donnees = array(
+                "sql_id" => $idLivre
+            );
+            $req_prep = self::$pdo->prepare($sql);
+            $req_prep->execute($donnees);
+            return true;
         } catch(PDOException $e){
             echo $e->getMessage();
             die("Erreur lors de la récupération des Adhérents");
