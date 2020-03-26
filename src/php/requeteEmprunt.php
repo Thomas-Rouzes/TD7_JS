@@ -8,5 +8,7 @@ if (isset($_GET['idAdherent']) && isset($_GET['idLivre']))
     $tab = Model::ajouter("emprunt", array("idAdherent" => $_GET['idAdherent'], "idLivre" =>$_GET['idLivre']));
 else if (isset($_GET['idLivre']) && isset($_GET["supprimer"]))
     $tab = Model::supprimer($_GET['idLivre']);
+else if (isset($_GET['idLivre']) && isset($_GET['selectionner']))
+    $tab = Model::selectionner("emprunt", $_GET['idLivre']);
 
 echo json_encode($tab);

@@ -11,11 +11,11 @@ let affichage = document.addEventListener("DOMContentLoaded", majAffichage);
 
 let ajoutAdherent = document.getElementById("ajouterAdherent").addEventListener("click", function () {
     adherent.ajouter();
-    setTimeout(majAffichage, 30);
+    setTimeout(majAffichage, 100);
 });
 let ajoutLivre = document.getElementById("ajouterLivre").addEventListener("click", function () {
     livre.ajouter();
-    setTimeout(majAffichage, 30);
+    setTimeout(majAffichage, 100);
 });
 
 let clickAdherent = document.getElementById("listeAdherents").addEventListener("click", function (e) {
@@ -23,5 +23,9 @@ let clickAdherent = document.getElementById("listeAdherents").addEventListener("
 });
 let clickLivre = document.getElementById("listeLivresDisponibles").addEventListener("click", function (e) {
     livre.alerter(e.target.innerText);
-    setTimeout(majAffichage, 20)
+    setTimeout(majAffichage, 100);
+});
+let clickEmprunt = document.getElementById("listeLivresEmpruntes").addEventListener("click", function (e) {
+    emprunt.alerter(e.target.innerText);
+    setTimeout(majAffichage, 100);
 });

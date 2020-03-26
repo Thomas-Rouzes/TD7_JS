@@ -21,7 +21,6 @@ class Adherent {
 
     callback(req) {
         let json = JSON.parse(req.responseText);
-        console.log(json);
         let tab = [];
         for (let i = 0; i < json.length; i++) {
             tab.push(new Adherent(json[i].idAdherent, json[i].nomAdherent, json[i].nbLivre));
@@ -55,7 +54,7 @@ class Adherent {
 
     alerter (info) {
         let url = "php/requeteAdherent.php?idAdherent=" + info.split(" ")[0];
-        this.AJAX(url, this.lancerAlerte)
+        this.AJAX(url, this.lancerAlerte);
     }
 
     lancerAlerte(req) {

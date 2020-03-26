@@ -79,21 +79,16 @@ class Model {
     public static function selectionner ($table, $id) {
             if ($table == "adherent") {
                 $sql = "SELECT a.idAdherent, nomAdherent, titreLivre FROM adherent a LEFT OUTER JOIN emprunt e ON e.idAdherent = a.idAdherent LEFT OUTER JOIN Livre l on e.idLivre = l.idLivre WHERE a.idAdherent = :sql_id";
-                $donnees = array(
-                    "sql_id" => $id
-                );
             } else if ($table == "emprunt") {
-                $sql = "SELECT nomAdherent FROM adherent a JOIN emprunt e ON e.idAdherent = a.idAdherent WHERE idLivre = :sql_id";
-                $donnees = array(
-                    "sql_id" => $id
-                );
+                $sql = "SELECT nomAdherent, idLivre FROM adherent a JOIN emprunt e ON e.idAdherent = a.idAdherent WHERE idLivre = :sql_id";
+            } else {
+                return false;
             }
         try {
             $req_prep = self::$pdo->prepare($sql);
-            $req_prep->execute($donnees);
+            $req_prep->execute(array("sql_id" => $id));
             $req_prep->setFetchMode(PDO::FETCH_OBJ);
-            $tab = $req_prep->fetchAll();
-            return $tab;
+            return $req_prep->fetchAll();
         } catch(PDOException $e){
             echo $e->getMessage();
             die("Erreur lors de la récupération des Adhérents");

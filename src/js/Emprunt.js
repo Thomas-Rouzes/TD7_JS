@@ -21,7 +21,6 @@ class Emprunt {
 
     callback(req) {
         let json = JSON.parse(req.responseText);
-        console.log(json);
         let tab = [];
         for (let i = 0; i < json.length; i++) {
             tab.push(new Emprunt(json[i].idLivre, json[i].idAdherent, json[i].titreLivre));
@@ -42,25 +41,23 @@ class Emprunt {
         }
     }
 
-    rendre() {
-        let url = "php/requeteLivre.php?titreLivre=" + document.getElementById("titreLivre").value;
-        this.AJAXSuppression(url);
-        document.getElementById("titreLivre").value = "";
-    }
-    AJAXSuppression(url) {
+    static AJAXSuppression(url) {
         let requete = new XMLHttpRequest();
         requete.open("GET", url, true);
         requete.send(null);
-        this.afficher();
     }
 //supprimer
     alerter (info) {
-        let reponse = confirm("");
-        let num = parseInt(reponse, 10);
-        if ( ! (isNaN(num) || num == null) ) {
-            let url = "php/requeteEmprunt.php?idAdherent=" + reponse + "&supprimer=true";
-            //alert(url);
-            this.AJAXAjout(url)
+        let url = "php/requeteEmprunt.php?idLivre=" + info.split(" ")[0] + "&selectionner=true";
+        this.AJAX(url, this.lancerAlerte);
+    }
+
+    lancerAlerte (req) {
+        let info = JSON.parse(req.responseText);//idLivre
+        let reponse = confirm("Livre prêté à " + info[0].nomAdherent + "\nRetour de ce livre ?");
+        if (reponse) {
+            let url = "php/requeteEmprunt.php?idLivre=" + info[0].idLivre + "&supprimer=true";
+            Emprunt.AJAXSuppression(url);
         }
     }
 }

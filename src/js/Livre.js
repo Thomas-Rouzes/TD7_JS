@@ -20,7 +20,6 @@ class Livre {
 
     callback(req) {
         let json = JSON.parse(req.responseText);
-        console.log(json);
         let tab = [];
         for (let i = 0; i < json.length; i++) {
             tab.push(new Livre(json[i].idLivre, json[i].titreLivre));
